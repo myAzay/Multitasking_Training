@@ -2,7 +2,7 @@
 using static System.Console;
 using static System.Diagnostics.Process;
 
-namespace MonitoringLib
+namespace MonitoringLib.ResourceMonitoring
 {
     public static class Recorder
     {
