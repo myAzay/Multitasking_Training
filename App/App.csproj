@@ -8,8 +8,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference
-		Include="..\MonitoringLib\MonitoringLib.csproj" />
+		<ProjectReference Include="..\MonitoringLib\MonitoringLib.csproj" />
 	</ItemGroup>
 	
 </Project>
