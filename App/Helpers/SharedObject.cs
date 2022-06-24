@@ -7,25 +7,38 @@ namespace App.Helpers
     {
         public string Message {
             get => _message;
-            set => _message = value;
+            private set => _message = value;
+        }
+        public int Counter
+        {
+            get => _counter;
+            private set => _counter = value;
         }
 
         private readonly int _iterator;
         private string _message;
+        private int _counter;
 
         public SharedObject(string message)
         {
             _message = message;
             _iterator = 5;
+            _counter = 0;
         }
 
         public SharedObject() : this("") { }
 
+        public void SetPropertiesToDefaultValue()
+        {
+            _message = "";
+            _counter = 0;
+        }
         public void WriteA()
         {
             for (int i = 0; i < _iterator; i++)
             {
                 _message += "A";
+                Interlocked.Increment(ref _counter);
                 ThreadInfo.OutputThreadInfo();
             }
             WriteLine();
@@ -36,6 +49,7 @@ namespace App.Helpers
             for (int i = 0; i < _iterator; i++)
             {
                 _message += "B";
+                Interlocked.Increment(ref _counter);
                 ThreadInfo.OutputThreadInfo();
             }
             WriteLine();
@@ -48,6 +62,7 @@ namespace App.Helpers
                 for (int i = 0; i < _iterator; i++)
                 {
                     _message += "A";
+                    _counter++;
                     ThreadInfo.OutputThreadInfo();
                 }
                 WriteLine();
@@ -61,6 +76,7 @@ namespace App.Helpers
                 for (int i = 0; i < _iterator; i++)
                 {
                     _message += "B";
+                    _counter++;
                     ThreadInfo.OutputThreadInfo();
                 }
                 WriteLine();

@@ -33,28 +33,51 @@ void Test1()
 
 void Test2()
 {
-    Start();
-
     var sharedObject = new SharedObject();
 
+    Start();
+    //One thread test
+    Console.WriteLine("FirstTest");
+    sharedObject.WriteA();
+    sharedObject.WriteB();
+    PrintObjectToConsole(sharedObject);
+    sharedObject.SetPropertiesToDefaultValue();
+    Console.WriteLine();
+
+    //Two threads test
     Task firstTask = Task.Run(sharedObject.WriteA);
     Task secondTask = Task.Run(sharedObject.WriteB);
 
-    Console.WriteLine("FirstTest");
+    Console.WriteLine("\nSecondTest");
     Task.WaitAll(new Task[] { firstTask, secondTask });
-    Console.WriteLine(sharedObject.Message);
-    sharedObject.Message = "";
+    PrintObjectToConsole(sharedObject);
+    sharedObject.SetPropertiesToDefaultValue();
     Console.WriteLine();
 
+    //Two threads with lock test
     Task firstTaskWithObjectLock = Task.Run(sharedObject.WriteAWithLock);
     Task secondTaskWithObjectLock = Task.Run(sharedObject.WriteBWithLock);
 
-    Console.WriteLine("SecondTest");
+    Console.WriteLine("\nThirdTest");
     Task.WaitAll(new Task[] { firstTaskWithObjectLock, secondTaskWithObjectLock });
-    Console.WriteLine(sharedObject.Message);
-
+    PrintObjectToConsole(sharedObject);
+    sharedObject.SetPropertiesToDefaultValue();
     Console.WriteLine();
+
     Stop();
+}
+
+void PrintObjectToConsole(SharedObject sharedObject)
+{
+    if(sharedObject is not null)
+    {
+        Console.WriteLine(sharedObject.Message);
+        Console.WriteLine(sharedObject.Counter);
+    }
+    else
+    {
+        Console.WriteLine("Object is null");
+    }
 }
 
 void TestSimpleLoop()
